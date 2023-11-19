@@ -8,3 +8,7 @@ lists[2].style.backgroundColor = 'green';
 for(let i =0; i<lists.length;i++){
     lists[i].style.fontWeight = 'bold';
 }
+var secondItem = document.querySelector('.list-group-item:nth-child(2)');
+secondItem.style.backgroundColor='green';
+var thirdItem = document.querySelector('.list-group-item:nth-child(3)');
+thirdItem.style.visibility = 'hidden';
