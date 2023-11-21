@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+     <head>
+          <style>
+               h1{
+                    text-align: center;
+                    border: solid 3px grey;
+               }
+          </style>
+     </head>
+     <body>
+          <h1>Store object in local storage using javascript</h1>
+          <script>
+          const myObj={
+               name:'Prathamesh',
+               age:22
+          }
+          var myObjString = JSON.stringify(myObj);
+          console.log(myObjString);
+          localStorage.setItem('myObject',myObjString);
+          
+          </script>
+     </body>
+</html>
