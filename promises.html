@@ -11,67 +11,62 @@
             { title: 'Post Two', body: 'This is post two' }
         ];
 
-        function getPost() {
-            setTimeout(() => {
-                let output = '';
-                posts.forEach((post, index) => {
-                    output += `<li>${post.title}</li>`;
-                });
-                document.body.innerHTML = output;
-            }, 1000);
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        function createPost(post) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    posts.push(post);
-                    const error = false;
-                    if (!error) {
-                        resolve();
-                    } else {
-                        reject('Error creating post');
-                    }
-                }, 2000);
+        async function getPost() {
+            await delay(1000);
+            let output = '';
+            posts.forEach((post, index) => {
+                output += `<li>${post.title}</li>`;
             });
+            document.body.innerHTML = output;
         }
 
-        function updateLastUserActivityTime() {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    const lastActivityTime = new Date().toLocaleTimeString();
-                    resolve(lastActivityTime);
-                }, 1000);
-            });
+        async function createPost(post) {
+            await delay(2000);
+            posts.push(post);
+            const error = false;
+            if (!error) {
+                return;
+            } else {
+                throw new Error('Error creating post');
+            }
         }
 
-        function deletePost() {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    posts.pop(); 
-                    const error = false;
-                    if (!error) {
-                        resolve();
-                    } else {
-                        reject('Error deleting post');
-                    }
-                }, 1000);
-            });
+        async function updateLastUserActivityTime() {
+            await delay(1000);
+            const lastActivityTime = new Date().toLocaleTimeString();
+            return lastActivityTime;
         }
 
-        
-        Promise.all([createPost({ title: 'Post Three', body: 'This is post three' }), updateLastUserActivityTime()])
-            .then(([_, lastActivityTime]) => {
-                console.log('Last activity time:', lastActivityTime);
-                getPost(); 
-                return deletePost(); 
-            })
-            .then(() => {
+        async function deletePost() {
+            await delay(1000);
+            posts.pop();
+            const error = false;
+            if (!error) {
+                return;
+            } else {
+                throw new Error('Error deleting post');
+            }
+        }
+
+        (async () => {
+            try {
+                await Promise.all([createPost({ title: 'Post Three', body: 'This is post three' }), updateLastUserActivityTime()])
+                    .then(async ([_, lastActivityTime]) => {
+                        console.log('Last activity time:', lastActivityTime);
+                        await getPost();
+                        await deletePost();
+                    });
+                
                 console.log('Post deleted successfully.');
-                getPost();
-            })
-            .catch((error) => {
+                await getPost();
+            } catch (error) {
                 console.error('Error:', error);
-            });
+            }
+        })();
     </script>
 
 </body>
